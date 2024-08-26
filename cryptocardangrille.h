@@ -13,14 +13,13 @@ class GrilleKey6x6;
 template <typename KeyArray>
 class CryptoCardanGrille
 {
-    /* Разработано в среде: Microsoft Visual Studio 2010
-     * Класс CryptoCardanGrille позволяет осуществлять шифрование/дешифрование текстовых данных, 
+    /* Класс CryptoCardanGrille позволяет осуществлять шифрование/дешифрование текстовых данных,
 	 * используя алгоритм квадрата Кардано.*/
 
 public:
 
 	CryptoCardanGrille()
-	{ 
+	{
 	    /* Устанавливаем локаль
          * Russian_Russia.1251 - идентификатор в формате POSIX*/
         setlocale(LC_ALL, "Russian_Russia.1251");
@@ -39,7 +38,7 @@ public:
         std::ifstream file1(input.data(), std::ifstream::in);
         std::ofstream file2(output.data(), std::ofstream::out);
 		const int size = KeyArray::size * KeyArray::size;
-		for(std::string line; getline(file1, line);) {	
+		for(std::string line; getline(file1, line);) {
 			std::string crypt;
 			for(std::size_t i = 0; i < line.length(); i+=size){
 				std::string sub = line.substr(i, size);
@@ -64,13 +63,13 @@ public:
         std::ifstream file1(input.data(), std::ifstream::in);
         std::ofstream file2(output.data(), std::ofstream::out);
 		const int size = KeyArray::size * KeyArray::size;
-		for(std::string line; getline(file1, line);) {	
+		for(std::string line; getline(file1, line);) {
 			std::string crypt;
 			for(std::size_t i = 0; i < line.length(); i+=size) {
 				std::string sub = line.substr(i, size);
 				crypt.append(this->decrypt(sub));
 			}
-			file2<<crypt<<std::endl;	
+			file2<<crypt<<std::endl;
         }
         file1.close(); file2.close();
     }
@@ -79,7 +78,7 @@ public:
 	 * квадрату стороны решетки (4*4, 5*5, ...).
 	 * Последовательно перемещаемся по шаблону решетки (квадрату),
 	 * предварительно определив длину результирующей строки (resize).
-	 * Вслучае если элемент решетки равен еденицы записываем в 
+	 * Вслучае если элемент решетки равен еденицы записываем в
 	 * результирующую строку элемнт входного параметра, индекс элемента
 	 * результирующей строки вычисляем по формуле (строка * размер + столбец)
 	 * Пройдя всю решетку (квадрат) поворачиваем ее вокруг оси на 90 градусов
@@ -89,8 +88,8 @@ public:
 		if(KeyArray::size * KeyArray::size == input.length()) {
 			int index = 0;
 			result.resize(KeyArray::size * KeyArray::size);
-			for (int x = 0; x < rotateCount; ++x) { 
-				for (int y = 0; y < KeyArray::size; ++y) 
+			for (int x = 0; x < rotateCount; ++x) {
+				for (int y = 0; y < KeyArray::size; ++y)
 					for (int z = 0; z < KeyArray::size; ++z)
 						if(key(y, z) == 1)
 							result[y * KeyArray::size + z] = input[index++];
@@ -107,7 +106,7 @@ public:
 	/* Функция дешифрует строку размером равным
 	 * квадрату стороны решетки (4*4, 5*5, ...).
 	 * Последовательно перемещаемся по шаблону решетки (квадрату).
-	 * Вслучае если элемент решетки равен еденицы помещаем в 
+	 * Вслучае если элемент решетки равен еденицы помещаем в
 	 * результирующую строку элемнт входного параметра, предварительно
 	 * проверив элемент на равенство нулевому коду табоицы Ascii, индекс элемента
 	 * входного параметра вычисляем по формуле (строка * размер + столбец)
@@ -117,8 +116,8 @@ public:
 		std::string src;
 		if(KeyArray::size * KeyArray::size == input.length()) {
 			int index = 0;
-			for (int x = 0; x < rotateCount; ++x) { 
-				for (int y = 0; y < KeyArray::size; ++y) 
+			for (int x = 0; x < rotateCount; ++x) {
+				for (int y = 0; y < KeyArray::size; ++y)
 					for (int z = 0; z < KeyArray::size; ++z)
 						if(key(y, z) == 1){
 							unsigned char ch = input[y * KeyArray::size + z];
@@ -145,12 +144,12 @@ private:
 
 	/* Поворот решетки на 90 градусов */
 	void rotate()  {
-		for(int i = 0; i < KeyArray::size; ++i) 
-		    for(int j = i; j < KeyArray::size; ++j) 
+		for(int i = 0; i < KeyArray::size; ++i)
+		    for(int j = i; j < KeyArray::size; ++j)
 			    std::swap(key(i, j), key(j, i));
 
-		for(int i = 0; i < KeyArray::size; ++i) 
-			for(int j = 0; j < KeyArray::size / 2; ++j) 
+		for(int i = 0; i < KeyArray::size; ++i)
+			for(int j = 0; j < KeyArray::size / 2; ++j)
 			  std::swap(key(i, j), key(i,  KeyArray::size - j - 1));
 	}
 
@@ -159,7 +158,7 @@ private:
 };
 
 
-class GrilleKey4x4 
+class GrilleKey4x4
 {
 	/*
 	 * Класс решетки (квадрата) 4 X 4
@@ -175,12 +174,12 @@ public:
 
 	~GrilleKey4x4() { }
 
-	int& operator()(int row, int col) { 
+	int& operator()(int row, int col) {
 		return key[row][col];
 	}
-	
-	const int& operator()(int row, int col) const { 
-		return key[row][col]; 
+
+	const int& operator()(int row, int col) const {
+		return key[row][col];
 	}
 
 	static const std::size_t size = 4;
@@ -207,12 +206,12 @@ public:
 
 	~GrilleKey5x5() { }
 
-	int& operator()(int row, int col) { 
+	int& operator()(int row, int col) {
 		return key[row][col];
 	}
-	
-	const int& operator()(int row, int col) const { 
-		return key[row][col]; 
+
+	const int& operator()(int row, int col) const {
+		return key[row][col];
 	}
 
 	static const std::size_t size = 5;
@@ -237,20 +236,20 @@ public:
                                 {0, 0, 0, 0, 1, 0},
 						        {1, 1, 0, 0, 0, 0}};
 
-		for (int i = 0; i < size; ++i) 
-			for (int j = 0; j < size; ++j) 
+		for (int i = 0; i < size; ++i)
+			for (int j = 0; j < size; ++j)
 				key[i][j] = keyA[i][j];
 
 	}
 
 	~GrilleKey6x6() { }
 
-	int& operator()(int row, int col) { 
+	int& operator()(int row, int col) {
 		return key[row][col];
 	}
-	
-	const int& operator()(int row, int col) const { 
-		return key[row][col]; 
+
+	const int& operator()(int row, int col) const {
+		return key[row][col];
 	}
 
 	static const std::size_t size = 6;
@@ -264,13 +263,13 @@ private:
 // GrilleKey5x5;
 // GrilleKey6x6;
 
-	/*Инстанцированием параметра шаблона получаем необходимый размер решетки*/	
-/*	
+	/*Инстанцированием параметра шаблона получаем необходимый размер решетки*/
+/*
 	CryptoCardanGrille<GrilleKey4x4> obj;
 	std::cout<<"Шифрование и дешифрование файла используя алгоритм квадрата Кардано..."<<std::endl;
 	obj.encryptFile("data.txt","encrypt.txt");
 	obj.decryptFile("encrypt.txt", "decrypt.txt");
 	std::cout<<"Работа завершина ..."<<std::endl;
-*/	
-	
+*/
+
 

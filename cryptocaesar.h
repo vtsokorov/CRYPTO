@@ -10,8 +10,7 @@
 
 class CryptoCaesar
 {
-    /* Разработано в среде: Microsoft Visual Studio 2010
-     * Класс CryptoCaesar позвол¤ет осуществл¤ть шифрование/дешифрование текстовых данных, 
+    /* Класс CryptoCaesar позволяет осуществлять шифрование/дешифрование текстовых данных,
 	 * которые содержат кириллические символы в кодировке windows-1251,
 	 * используя алгоритм Цезаря с ключевым словом. */
 public:
@@ -41,12 +40,12 @@ public:
                 if((unsigned char)key[j] == (unsigned char)i){
                     insert = false; break;
                 }
-            if(insert) 
+            if(insert)
 				charsWithoutKey.push_back((unsigned char)i); //последовательность без символов ключа
             srcChars.push_back((unsigned char)i);//исходный алфавит
         }
 
-       /*Алфавит шифровани¤ с учетом смещени¤ и ключа*/
+       /*Алфавит шифрования с учетом смещения и ключа*/
        modChars.resize(sizeChars);
        for(std::size_t i = 0, j = charsWithoutKey.length() - offset; i < sizeChars; ++i, ++j) {
            if(i == offset || i == key.length() + offset) j = 0;
@@ -57,7 +56,7 @@ public:
                modChars[i] = charsWithoutKey[j];
        }
     }
-	
+
 	/*Шифруем строку*/
     std::string encrypt(const std::string& input)
     {
